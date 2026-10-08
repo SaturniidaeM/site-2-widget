@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="normal">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0d0d11" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Will Wood — Interactive Cabinet</title>
+  <meta name="description" content="Интерактивный дэшборд, посвящённый музыке Will Wood и Will Wood and the Tapeworms." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#matcher" data-i18n="a11y.skip">Перейти к содержимому</a>
+
+  <header class="navbar" role="banner">
+    <div class="navbar__inner">
+      <a href="#top" class="navbar__logo" aria-label="Will Wood">
+        <span class="navbar__logo-mark">WW</span>
+        <span class="navbar__logo-text">Cabinet</span>
+      </a>
+
+      <nav class="navbar__nav" aria-label="Навигация">
+        <a href="#matcher" data-i18n="nav.matcher">Тест</a>
+        <a href="#setlist" data-i18n="nav.setlist">Плейлист</a>
+        <a href="#poll" data-i18n="nav.poll">Голосование</a>
+        <a href="#camp" data-i18n="nav.camp">Лагерь</a>
+        <a href="#game" data-i18n="nav.game">Игра</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <label class="visually-hidden" for="theme-switcher" data-i18n="theme.label">Тема</label>
+        <select id="theme-switcher" class="theme-switcher" aria-label="Theme">
+          <option value="normal">The Normal Album</option>
+          <option value="selfish">Self-Ish</option>
+          <option value="camp">Camp Here &amp; There</option>
+          <option value="incase">In Case I Make It</option>
+          <option value="everything">Everything is a Lot</option>
+        </select>
+        <button id="lang-switch" class="icon-btn lang-switch" title="Switch language" aria-label="Switch language">EN</button>
+        <button id="reduce-motion" class="icon-btn" aria-pressed="false" title="Reduce motion" data-i18n-title="a11y.reduceMotion">🎭</button>
+        <button id="menu-toggle" class="icon-btn menu-toggle" aria-expanded="false" aria-controls="mobile-nav" data-i18n-aria-label="a11y.menu">☰</button>
+      </div>
+    </div>
+    <nav id="mobile-nav" class="mobile-nav" hidden aria-label="Мобильная навигация"></nav>
+  </header>
+
+  <main id="main" role="main">
+
+    <!-- ================= HERO ================= -->
+    <section id="top" class="section-block hero-section">
+      <div class="hero">
+        <div class="hero__bg" aria-hidden="true"></div>
+        <div class="hero__content">
+          <p class="hero__eyebrow" data-i18n="hero.eyebrow">Interactive Cabinet</p>
+          <h1 class="hero__title">Will Wood <span>&amp;</span> the Tapeworms</h1>
+          <p class="hero__subtitle" data-i18n="hero.subtitle">Театральный кабаре-рок, хаотичная латина, ду-воп, клезмер — всё в одном кабинете.</p>
+          <div class="hero__cta">
+            <a href="#matcher" class="btn btn--primary" data-i18n="hero.ctaStart">Пройти тест</a>
+            <a href="#game" class="btn btn--ghost" data-i18n="hero.ctaGame">Играть</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Быстрые виджеты прямо в hero -->
+      <div class="widgets widgets--compact">
+        <article class="widget">
+          <header class="widget__head"><h2 data-i18n="widget.quoteOfDay">Цитата дня</h2></header>
+          <div class="quote-of-day" id="quote-of-day"></div>
+        </article>
+
+        <article class="widget">
+          <header class="widget__head"><h2 data-i18n="widget.moodOfDay">Настроение дня</h2></header>
+          <div class="mood-of-day" id="mood-of-day"></div>
+        </article>
+
+        <article class="widget">
+          <header class="widget__head"><h2 data-i18n="widget.randomTrack">Случайный трек</h2></header>
+          <div class="random-track" id="random-track"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= MATCHER ================= -->
+    <section id="matcher" class="section-block">
+      <h2 class="page-title" data-i18n="page.matcher">Какая песня тебе подходит?</h2>
+      <p class="page-sub" data-i18n="page.matcherSub">Ответь на 4 вопроса — кабинет подберёт тебе трек Will Wood.</p>
+      <div class="matcher" id="matcher-box"></div>
+    </section>
+
+    <!-- ================= SETLIST ================= -->
+    <section id="setlist" class="section-block">
+      <h2 class="page-title" data-i18n="page.setlist">Составить плейлист</h2>
+      <p class="page-sub" data-i18n="page.setlistSub">Кликай на треки — кабинет оценит драматургию плейлиста.</p>
+
+      <div class="two-cols">
+        <article class="widget">
+          <header class="widget__head">
+            <h2 data-i18n="setlist.title">Твой плейлист</h2>
+            <button class="btn btn--small btn--ghost" id="reset-setlist" data-i18n="btn.reset">Очистить</button>
+          </header>
+          <div class="setlist" id="setlist-box" aria-live="polite"></div>
+          <div class="setlist__score" id="setlist-score"></div>
+        </article>
+
+        <article class="widget">
+          <header class="widget__head">
+            <h2 data-i18n="setlist.pool">Пул треков</h2>
+            <span class="widget__hint" data-i18n="setlist.hint">кликни, чтобы добавить</span>
+          </header>
+          <div class="track-pool" id="track-pool"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= POLL + SONG QUOTES ================= -->
+    <section id="poll" class="section-block">
+      <div class="two-cols">
+        <article class="widget">
+          <header class="widget__head">
+            <h2 data-i18n="poll.title">Любимый альбом</h2>
+            <button class="btn btn--small btn--ghost" id="reset-votes" data-i18n="btn.reset">Сбросить</button>
+          </header>
+          <div id="poll-box"></div>
+        </article>
+
+        <article class="widget">
+          <header class="widget__head">
+            <h2 data-i18n="songQuotes.title">Цитаты из песен</h2>
+            <button class="btn btn--small btn--ghost" id="song-quote-next" data-i18n="btn.more">Ещё</button>
+          </header>
+          <div id="song-quotes" class="song-quotes"></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= CAMP ================= -->
+    <section id="camp" class="section-block">
+      <h2 class="page-title" data-i18n="page.camp">Camp Here &amp; There</h2>
+      <p class="page-sub" data-i18n="page.campSub">Звуки леса и дневник лагеря. Костёр, сверчки, дождь, сова, ветер — всё синтезируется прямо в браузере.</p>
+
+      <div class="two-cols">
+        <article class="widget">
+          <header class="widget__head">
+            <h2 data-i18n="camp.sounds">Звуки леса</h2>
+            <span class="widget__hint" data-i18n="camp.soundsHint">можно включить несколько</span>
+          </header>
+          <div class="camp-sounds" id="camp-sounds"></div>
+        </article>
+
+        <article class="widget">
+          <header class="widget__head">
+            <h2 data-i18n="camp.diary">Дневник лагеря</h2>
+            <button class="btn btn--small btn--ghost" id="reset-diary" data-i18n="btn.reset">Очистить</button>
+          </header>
+          <form class="diary" id="diary-form">
+            <label class="visually-hidden" for="diary-input" data-i18n="camp.diary">Дневник лагеря</label>
+            <textarea id="diary-input" rows="2" data-i18n-placeholder="camp.diaryPlaceholder" placeholder="Сегодня под костром…"></textarea>
+            <button class="btn btn--primary btn--small" type="submit" data-i18n="btn.write">Записать</button>
+          </form>
+          <ul class="diary-list" id="diary-list"></ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ================= GAME ================= -->
+    <section id="game" class="section-block">
+      <h2 class="page-title" data-i18n="page.game">Угадай трек по эмодзи</h2>
+      <p class="page-sub" data-i18n="page.gameSub">8 уровней. Угадай, какая песня зашифрована в эмодзи.</p>
+
+      <article class="widget game">
+        <div class="game__head">
+          <div class="game__score">
+            <span data-i18n="game.score">Очки</span>: <strong id="game-score">0</strong> / <span id="game-total">0</span>
+          </div>
+          <button class="btn btn--small btn--ghost" id="game-reset" data-i18n="game.reset">Заново</button>
+        </div>
+
+        <div class="game__progress">
+          <div class="game__progress-bar" id="game-progress"></div>
+        </div>
+
+        <div id="game-stage"></div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p data-i18n="footer.disclaimer">Фан-проект. Аудио — только официальные эмбеды Spotify/YouTube. Тексты песен не воспроизводятся.</p>
+    <p class="muted">© <span id="year"></span> <span data-i18n="footer.rights">Interactive Cabinet</span></p>
+  </footer>
+
+  <div class="audio-bar" id="audio-bar" hidden role="region" aria-label="Player">
+    <div class="audio-bar__meta">
+      <span class="audio-bar__title" id="audio-title">—</span>
+      <span class="audio-bar__sub muted" id="audio-sub"></span>
+    </div>
+    <div class="audio-bar__actions">
+      <button class="icon-btn" id="audio-expand" aria-expanded="false" data-i18n="btn.expand">▶︎ Развернуть</button>
+      <button class="icon-btn" id="audio-close" aria-label="Close" data-i18n-aria-label="a11y.close">✕</button>
+    </div>
+    <div class="audio-bar__embed" id="audio-embed" hidden></div>
+  </div>
+
+  <button id="back-to-top" class="back-to-top" hidden aria-label="Back to top" data-i18n-aria-label="a11y.top">
+    <span aria-hidden="true">↑</span>
+  </button>
+
+  <script src="app.js"></script>
+</body>
+</html>
